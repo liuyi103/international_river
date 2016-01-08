@@ -1,7 +1,7 @@
 __author__ = 'liu'
 
 import numpy as np
-import tensorflow as tf
+from ortools.linear_solver import pywraplp
 
 class Country:
     '''
@@ -19,11 +19,13 @@ class Country:
         :param max_flow: upper bound for outflow
         :return:
         '''
+        self.solver = pywraplp.Solver('CoinsGridGLPK',\
+                             pywraplp.Solver.GLPK_MIXED_INTEGER_PROGRAMMING)
         self.upstream = upstream
         self.downstream = downstream
         self.weights = weights
         self.f_weight = f_weight
-        self.outflow = tf.placeholder(tf.float32, [12], 'outflow')
+        self.outflow = self.solver
         self.outfish = tf.placeholder(tf.float32)
         self.power = 1. # the power of a country
         self.threshold = 100
